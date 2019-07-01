@@ -57,4 +57,4 @@ for words in story_remove:
 #测试超纲单词数量
 
 print('书中一共有{0}个单词，一共出现了{1}种单词，其中超纲单词有{2}种，其占比为{3}'.format
-      (len(story_open),len(story_remove),count,count/len(story_remove)))
+      (len(story_open),len(story_remove),count,round(count/len(story_remove),2)))
