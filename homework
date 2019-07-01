@@ -1,0 +1,60 @@
+def text_to_words(the_text): #删除符号
+    my_substitutions = the_text.maketrans(
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&()*+,-./:;<=>?@[]^_`{|}~'\\",
+      "abcdefghijklmnopqrstuvwxyz                                          ")
+    cleaned_text = the_text.translate(my_substitutions)
+    wds = cleaned_text.split()
+    return wds
+
+def open_file(filename): #打开
+    f=open(filename,'r')
+    data = f.readlines()
+    data2=[]
+    for words in data:
+        words_2 = words.strip()
+        data2.append(words_2)
+    data2=str(data2)
+    #return data2
+    return text_to_words(data2)
+
+def remove_repeative(file): #去掉重复
+    result = []
+    recent_word = None
+    for w in file:
+        if w != recent_word:
+            result.append(w)
+            recent_word = w
+    return result
+
+def test_words(file_be_tested,file_test):  #二分测试
+    mid = len(file_be_tested)
+    if len(file_be_tested) == 0:
+        return False
+    else:
+        mid = len(file_be_tested) // 2
+        if file_test == file_be_tested[mid]:
+            return True
+        else:
+            if file_test <= file_be_tested[mid]:
+                return test_words (file_be_tested[0:mid],file_test)
+            else:
+                return test_words (file_be_tested[mid+1:],file_test)    
+
+story_open = open_file('爱丽丝.txt')
+story_open.sort()
+list_open = open_file('单词表.txt')
+story_remove = remove_repeative(story_open)  
+#打开，排序，除杂
+
+count = 0
+list_words = []
+for word_criterion in list_open:
+    list_words.append(word_criterion)
+for words in story_remove:
+    result = test_words(list_words,words)
+    if result == False:
+        count += 1
+#测试超纲单词数量
+
+print('书中一共有{0}个单词，一共出现了{1}种单词，其中超纲单词有{2}种，其占比为{3}'.format
+      (len(story_open),len(story_remove),count,count/len(story_remove)))
